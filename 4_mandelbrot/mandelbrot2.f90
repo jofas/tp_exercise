@@ -11,9 +11,10 @@ program mandelbrot
   start = omp_get_wtime()
   numoutside = 0
 
-  !$omp parallel do default(none) private(i, j, c, z, iter) reduction(+:numoutside)
+  !$omp parallel do default(none) private(i, j, c, z, iter) &
+  !$omp reduction(+:numoutside) collapse(2)
   do i = 0, npoints-1
-     do j= 0,npoints-1
+    do j= 0,npoints-1
         c = cmplx(-2.0+(2.5*i)/npoints + 1.0d-07,(1.125*j)/npoints + 1.0d-07)
         z = c
         iter = 0
@@ -37,3 +38,4 @@ program mandelbrot
   print *, "Area of Mandelbrot set = ",area," +/- ",error
   print *, "Time  = ", finish-start, " seconds"
 end
+
